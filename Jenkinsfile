@@ -3,6 +3,7 @@ pipeline {
 
     environment {
         NETLIFY_SITE_ID = '117377bc-cf00-4cb9-ab48-eb00b9e44011'
+        NETLIFY_AUTH_TOKEN = credentials('netlify-token') 
     }
 
     stages {
@@ -52,7 +53,6 @@ pipeline {
                     reuseNode true
                 }
             }
-
             steps{
                 sh '''
                 npm install serve
@@ -60,11 +60,6 @@ pipeline {
                 sleep 10
                 npx playwright test --reporter=html
                 '''
-            }
-            post{
-                always{
-                    publishHTML([allowMissing: false, alwaysLinkToLastBuild: false, keepAll: false, reportDir: 'LEARN-JENKINS-APP/build/reports/codenarc'])
-                }
             }
         }
     }
